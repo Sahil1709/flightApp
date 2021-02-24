@@ -1,0 +1,253 @@
+<style>
+  
+    * {
+    box-sizing: border-box;
+  }
+  body,
+  .header,
+  .flight,
+  .flight-active,
+  .flight-progress,
+  .flight-progress-track,
+  .flight-details thead,
+  .flight-details-estimated {
+    transition: all 150ms ease-in-out;
+    transition-delay: 0ms;
+  }
+  body {
+    font-family: Ciutadella;
+    padding-bottom: 20px;
+  }
+  .header {
+    padding: 20px;
+    padding-bottom: 60px;
+    margin-bottom: -40px;
+    font-size: 40px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+  }
+  .flight {
+    padding: 20px;
+    margin: 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 16px;
+    border-bottom: 1px solid transparent;
+  }
+  .flight-active {
+    font-size: 20px;
+    z-index: 2;
+    position: relative;
+  }
+  .label {
+    font-size: 0.8em;
+    padding: 0.35em 0.4em 0.2em 0.4em;
+    margin-right: 0.4em;
+    border-radius: 3px;
+    display: inline-block;
+    position: relative;
+    top: -2px;
+  }
+  .toggle {
+    font-size: 0.8em;
+    opacity: 0.5;
+    position: relative;
+    top: 5px;
+    cursor: pointer;
+  }
+  .label-green {
+    background: #38b071;
+    color: #fff;
+  }
+  .label-yellow {
+    background: #fed453;
+    color: #000;
+  }
+  .flight-heading {
+    font-size: 1.25em;
+    flex: 1 0 100%;
+  }
+  .flight-desc {
+    font-size: 0.9em;
+    margin-top: 0.4em;
+  }
+  .flight-cities {
+    flex: 1 0 100%;
+    display: flex;
+    margin: 0.8em 0;
+  }
+  .flight-progress {
+    flex: 1 0 auto;
+    height: 4px;
+    align-self: center;
+    margin: 0 15px;
+  }
+  .flight-active .flight-progress-track {
+    width: 65%;
+    height: 100%;
+    text-align: right;
+    font-size: 2.6em;
+    line-height: 0.24;
+    color: #30b16f;
+    letter-spacing: -0.05em;
+  }
+  .flight-leg {
+    flex: 1 0 50%;
+    display: flex;
+  }
+  .flight-to {
+    text-align: right;
+    justify-content: flex-end;
+  }
+  .flight-to .flight-city {
+    text-align: right;
+  }
+  .flight-city {
+    font-size: 1.875em;
+  }
+  .flight-details {
+    font-size: 1.125em;
+  }
+  .flight-details td + td {
+    padding-left: 15px;
+  }
+  .flight-details-estimated:after {
+    font-size: 0.4em;
+    vertical-align: super;
+  }
+  @font-face {
+    font-family: 'Ciutadella';
+    src: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/70390/qfont.woff") format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  .light-theme {
+    background: #ebebeb;
+    color: #000;
+  }
+  .light-theme .moon {
+    display: none;
+  }
+  .light-theme .header {
+    background: #6ac0eb;
+    color: #fff;
+  }
+  .light-theme .flight {
+    background: #fafafa;
+    border-bottom-color: #dfdfdf;
+    box-shadow: 0 1px 6px 0 rgba(0,0,0,0.1);
+  }
+  .light-theme .flight-active {
+    box-shadow: 0 1px 10px 0 rgba(0,0,0,0.3);
+    background: #fff;
+    border-color: #fff;
+  }
+  .light-theme .flight-progress {
+    background: #f0f0f0;
+  }
+  .light-theme .flight-progress .flight-progress-track {
+    background: #30b16f;
+  }
+  .light-theme .flight-details thead {
+    color: #878787;
+  }
+  .light-theme .flight-details-estimated {
+    color: #878787;
+  }
+  .dark-theme {
+    background: #1c1c1c;
+    color: #fff;
+  }
+  .dark-theme .sun {
+    display: none;
+  }
+  .dark-theme .header {
+    background: #6ac0eb;
+    color: #fff;
+  }
+  .dark-theme .flight {
+    background: #323232;
+    border-bottom-color: #202020;
+    box-shadow: 0 1px 6px 0 rgba(0,0,0,0.1);
+  }
+  .dark-theme .flight-active {
+    box-shadow: 0 1px 10px 0 rgba(0,0,0,0.3);
+    background: #424242;
+    border-color: transparent;
+  }
+  .dark-theme .flight-progress {
+    background: rgba(255,255,255,0.08);
+  }
+  .dark-theme .flight-progress .flight-progress-track {
+    background: #30b16f;
+  }
+  .dark-theme .flight-details thead {
+    color: #b3b3b3;
+  }
+  .dark-theme .flight-details-estimated {
+    color: #b3b3b3;
+  }
+  
+  
+  </style>
+{%load static%}
+<h1>{{bookingStatus}}</h1>
+<a class="btn btn-primary" href="/">Go back to homwpage</a>
+<div class="flight flight-active">
+    <img src="{{current.img.url}}" alt="" class="img-fluid">
+     <div class="flight-heading">
+      {{current.name}}
+    </div>
+
+    <div class="flight-desc">
+      <div class="label label-green">Airborne</div>
+       Date : {{current.date}}
+    </div>
+    
+
+    <div class="flight-cities">
+      <div class="flight-city">{{current.depart_from}}</div>
+      <div class="flight-progress"><div class="flight-progress-track">&#9992;</div></div>
+      <div class="flight-city">{{current.destination}}</div>
+    </div>
+
+    <div class="flight-leg flight-from">
+      <table class="flight-details">
+        <thead>
+          <tr>
+            <td>Departure</td>
+            <td>Arrival</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{current.depart_timing}}</td>
+            <td>{{current.reach_timing}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="flight-leg flight-to">
+      <table class="flight-details">
+        <thead>
+          <tr>
+            <td>Seats</td>
+            <td>Price</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="flight-details-estimated">{{current.seats}}</td>
+            <td class="flight-details-estimated">${{current.price}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <br>

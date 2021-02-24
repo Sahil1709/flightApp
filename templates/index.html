@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="{% static 'css&js/styles.css' %}">
+    <script src="{% static 'css&js/main.js' %}"></script>
+    <title>Django app</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #6ac0eb;">
+        <div class="navbar-brand" ><img src="https://cdn4.iconfinder.com/data/icons/aiga-symbol-signs/444/aiga_departingflights-512.png" style="width: 50px;height: 50px;" alt=""></div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home </a>
+            </li>
+            <li class="nav-item ">
+              {%if user.is_authenticated %}
+              <a class="nav-link" href="{% url 'edit_page' user.id %}">Account</a>
+              {%else%}
+              <a class="nav-link" href="/account/login">Login</a>
+              {%endif%}
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/admin">Admin</a>
+            </li>
+          </ul>
+          {%if user.is_authenticated %}
+          <ul class="nav navbar-nav navbar-right">
+            <span class="navbar-brand">Welcome, {{user.first_name}}</span> 
+            <li><a class="navbar-brand" href="/account/logout"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+              <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+            </svg></a></li>
+          </ul>
+          {%endif%}
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search">
+            <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </div>
+      </nav>
+    {% block content %}
+      {%if info.page == 'home' %}
+        {%include 'home.html'%}
+      {% elif info.page == 'login' %}
+        {%include 'login.html'%}
+      {% elif info.page == 'register' %}
+        {%include 'register.html'%}
+      {% elif info.page == 'profile' %}
+        {%if user.is_authenticated %}
+          {%include 'profile.html'%}
+        {%else%}
+          {%include 'pagenotfound.html'%}
+        {%endif %}
+      {% elif info.page == 'confirm-booking' %}
+        {%if user.is_authenticated %}
+        {%include 'confirm-booking.html'%}
+      {%else%}
+        {%include 'pagenotfound.html'%}
+      {%endif %}
+      {% elif info.page == 'about' %}
+        {%include 'table.html' %}
+      {%else%}
+        {%include 'pagenotfound.html' %}
+      {% endif %}
+    {% endblock %}
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script>
+  jQuery(function($) {
+ var path = window.location.href; // because the 'href' property of the DOM element is the absolute path
+ $('ul a').each(function() {
+  if (this.href === path) {
+   $(this).addClass('active');
+  }
+ });
+});
+</script>
+</body>
+</html>
