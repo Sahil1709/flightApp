@@ -1,0 +1,1 @@
+web: gunicorn flightApp.wsgi --log-file -
