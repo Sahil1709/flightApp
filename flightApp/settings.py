@@ -25,7 +25,7 @@ SECRET_KEY = 'rmb(=j1ct5=+5v_jgmc92f7^t7e20-t5+lb$t@be7yz_wom2rq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['flights-management.herokuapp.com/' , '127.0.0.1']
+ALLOWED_HOSTS = ['flights-management.herokuapp.com' , '127.0.0.1']
 
 
 # Application definition
